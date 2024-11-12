@@ -9,6 +9,7 @@ import javax.swing.JPanel;
 import javax.swing.plaf.basic.BasicComboBoxUI.KeyHandler;
 
 import Entity.Player;
+import tile.TileManager;
 
 public class GamePanle extends JPanel implements Runnable{
     
@@ -16,13 +17,14 @@ public class GamePanle extends JPanel implements Runnable{
     final int scale = 3;
 
     public final int tilesize = originaltilesize*scale;
-    final int maxscreencol = 16;
-    final int maxscreenrow = 12;
-    final int screenwidth = tilesize*maxscreencol; //768 pix
-    final int screenhight = tilesize*maxscreenrow; //576 pix
+    public final int maxscreencol = 16;
+    public final int maxscreenrow = 12;
+    public final int screenwidth = tilesize*maxscreencol; //768 pix
+    public final int screenhight = tilesize*maxscreenrow; //576 pix
 
     int FPS= 60;
 
+    TileManager tileM = new TileManager(this);
     keyHandler keyH= new keyHandler();
     Thread gameThread;
     Player player = new Player(this, keyH);
@@ -99,7 +101,9 @@ public class GamePanle extends JPanel implements Runnable{
 
         Graphics2D g2 = (Graphics2D)g;
 
-      player.draw(g2);
+        tileM.draw(g2);
+
+        player.draw(g2);
 
         g2.dispose();
     }

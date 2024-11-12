@@ -9,6 +9,7 @@ import javax.swing.JPanel;
 import javax.swing.plaf.basic.BasicComboBoxUI.KeyHandler;
 
 import Entity.Player;
+import tile.TileManager;
 
 public class GamePanle extends JPanel implements Runnable{
     
@@ -23,6 +24,7 @@ public class GamePanle extends JPanel implements Runnable{
 
     int FPS= 60;
 
+    TileManager tileM = new TileManager(this);
     keyHandler keyH= new keyHandler();
     Thread gameThread;
     Player player = new Player(this, keyH);
@@ -99,7 +101,9 @@ public class GamePanle extends JPanel implements Runnable{
 
         Graphics2D g2 = (Graphics2D)g;
 
-      player.draw(g2);
+        tileM.draw(g2);
+
+        player.draw(g2);
 
         g2.dispose();
     }

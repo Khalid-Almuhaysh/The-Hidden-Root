@@ -6,7 +6,10 @@ package tile;
 
 import main.GamePanle;
 import java.awt.Graphics2D;
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 
 import javax.imageio.ImageIO;
 
@@ -15,11 +18,18 @@ import javax.imageio.ImageIO;
 public class TileManager {
     GamePanle gp;
     Tile[] tile;
+    int maptilenum[][];
 
     public TileManager(GamePanle gp)
     {
         this.gp = gp;
+
         tile = new Tile[10];
+
+        maptilenum = new int[gp.maxscreencol][gp.maxscreenrow];
+
+        getTileImage();
+        loadmap("map01.txt");
 
     }
 
@@ -27,8 +37,7 @@ public class TileManager {
         try 
         {
             tile[0] = new Tile();
-            tile[0].image = ImageIO.read(getClass().getResourceAsStream("grass.png"));
-
+            tile[0].image =ImageIO.read(getClass().getResourceAsStream("grass.png"));
             tile[1] = new Tile();
             tile[1].image = ImageIO.read(getClass().getResourceAsStream("wall.png"));
 
@@ -50,9 +59,67 @@ public class TileManager {
         }
     }
 
+        public void loadmap(String filepass){
+            try{
+                InputStream is = getClass().getResourceAsStream(filepass);
+                BufferedReader br = new BufferedReader(new InputStreamReader(is));
+
+                int col = 0;
+                int row = 0;
+
+                while (col < gp.maxscreencol && row < gp.maxscreenrow) {
+
+                    String line = br.readLine();
+
+                    while (col < gp.maxscreencol) {
+                        String numbers[]= line.split(" ");
+
+                        int num = Integer.parseInt(numbers[col]);
+
+                        maptilenum[col][row]=num;
+
+                        col++;
+                    }
+
+                    if(col== gp.maxscreencol){
+                        col=0;
+                        row++;
+                    }
+                    
+                }
+                br.close();
+
+            }catch(Exception e){
+
+            }
+
+
+
+
+        }
+
         public void draw(Graphics2D g2)
         {
-            g2.drawImage(tile[0].image, 0, 0,gp.tilesize ,gp.tilesize, null);
+            int col = 0;
+            int row = 0;
+            int x = 0;
+            int y = 0;
+
+            while(col < gp.maxscreencol && row < gp.maxscreenrow){
+                
+                int tilenum= maptilenum[col][row];
+                
+                g2.drawImage(tile[tilenum].image,x,y,gp.tilesize,gp.tilesize,null);
+                col++;
+                x += gp.tilesize;
+
+                if(col == gp.maxscreencol){
+                    col = 0;
+                    x = 0;
+                    row++;
+                    y += gp.tilesize;
+                }
+            }
             
         }
     

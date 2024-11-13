@@ -18,6 +18,9 @@ public class Player extends Entity{
     GamePanle gp;
     keyHandler keyH;
 
+    public final int screenx;
+    public final int screeny;
+
     
 
     public Player(GamePanle gp, keyHandler keyH){
@@ -25,14 +28,17 @@ public class Player extends Entity{
         this.gp=gp;
         this.keyH=keyH;
 
+        screenx = gp.screenwidth/2 - (gp.tilesize/2);
+        screeny = gp.screenhight/2 - (gp.tilesize/2);
+
         setdefaultvalues();
         getplayerimage();
     }
 
     public void setdefaultvalues(){
 
-        x = 100;
-        y = 100;
+        worldx = gp.tilesize*25;
+        worldy = gp.tilesize*25;
         speed= 4;
         direction ="down";
     }
@@ -56,38 +62,64 @@ public class Player extends Entity{
     }
     public void update(){
 
-        if(keyH.upPressed == true || keyH.downPressed == true ||
-         keyH.leftPressed == true || keyH.rightPressed == true ){
-        
-        if(keyH.upPressed == true){
-            direction = "up";
-            y -= speed;
-        }
-        if(keyH.downPressed == true){
-            direction = "down";
-            y += speed;
-        }
-        if(keyH.leftPressed == true){
-            direction = "left";
-            x -= speed;
-        }
-        if(keyH.rightPressed == true){
-            direction = "right";
-            x += speed;
-        }
+        boolean isMovingDiagonally = false;
 
-        spritecounter++;
-        if(spritecounter >= 12){
-            if(spritnum == 1){
-                spritnum = 2;
+        if (keyH.upPressed || keyH.downPressed || keyH.leftPressed || keyH.rightPressed) {
+    
+            // Handle diagonal movement
+            if (keyH.upPressed && keyH.rightPressed) {
+                direction = "right";
+                worldx += speed / Math.sqrt(2);
+                worldy -= speed / Math.sqrt(2);
+                isMovingDiagonally = true;
+            } else if (keyH.upPressed && keyH.leftPressed) {
+                direction = "left";
+                worldx -= speed / Math.sqrt(2);
+                worldy -= speed / Math.sqrt(2);
+                isMovingDiagonally = true;
+            } else if (keyH.downPressed && keyH.rightPressed) {
+                direction = "right";
+                worldx += speed / Math.sqrt(2);
+                worldy += speed / Math.sqrt(2);
+                isMovingDiagonally = true;
+            } else if (keyH.downPressed && keyH.leftPressed) {
+                direction = "left";
+                worldx -= speed / Math.sqrt(2);
+                worldy += speed / Math.sqrt(2);
+                isMovingDiagonally = true;
             }
-            else if(spritnum == 2){
-                spritnum = 1;
+    
+            // Handle non-diagonal movement if not moving diagonally
+            if (!isMovingDiagonally) {
+                if (keyH.upPressed) {
+                    direction = "up";
+                    worldy -= speed;
+                } else if (keyH.downPressed) {
+                    direction = "down";
+                    worldy += speed;
+                } else if (keyH.leftPressed) {
+                    direction = "left";
+                    worldx -= speed;
+                } else if (keyH.rightPressed) {
+                    direction = "right";
+                    worldx += speed;
+                }
             }
-            spritecounter = 0;
+    
+            // Update sprite animation
+            spritecounter++;
+            if (spritecounter >= 12) {
+                if (spritnum == 1) {
+                    spritnum = 2;
+                } else if (spritnum == 2) {
+                    spritnum = 1;
+                }
+                spritecounter = 0;
+            }
         }
     }
-    }
+    
+
     public void draw(Graphics2D g2){
 
         BufferedImage image= null;
@@ -132,7 +164,7 @@ public class Player extends Entity{
 
         }
 
-        g2.drawImage(image, x, y, gp.tilesize , gp.tilesize, null);
+        g2.drawImage(image, screenx, screeny, gp.tilesize , gp.tilesize, null);
         
         
     }

@@ -63,29 +63,31 @@ public class Player extends Entity{
     public void update(){
 
         boolean isMovingDiagonally = false;
+        double digonalspeed = 2.8284;
+        
 
         if (keyH.upPressed || keyH.downPressed || keyH.leftPressed || keyH.rightPressed) {
     
             // Handle diagonal movement
             if (keyH.upPressed && keyH.rightPressed) {
                 direction = "right";
-                worldx += speed / Math.sqrt(2);
-                worldy -= speed / Math.sqrt(2);
+                worldx += digonalspeed;
+                worldy -= digonalspeed;
                 isMovingDiagonally = true;
             } else if (keyH.upPressed && keyH.leftPressed) {
                 direction = "left";
-                worldx -= speed / Math.sqrt(2);
-                worldy -= speed / Math.sqrt(2);
+                worldx -= digonalspeed;
+                worldy -= digonalspeed;
                 isMovingDiagonally = true;
             } else if (keyH.downPressed && keyH.rightPressed) {
                 direction = "right";
-                worldx += speed / Math.sqrt(2);
-                worldy += speed / Math.sqrt(2);
+                worldx += digonalspeed;
+                worldy += digonalspeed;
                 isMovingDiagonally = true;
             } else if (keyH.downPressed && keyH.leftPressed) {
                 direction = "left";
-                worldx -= speed / Math.sqrt(2);
-                worldy += speed / Math.sqrt(2);
+                worldx -= digonalspeed;
+                worldy += digonalspeed;
                 isMovingDiagonally = true;
             }
     

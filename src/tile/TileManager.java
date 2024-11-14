@@ -29,7 +29,7 @@ public class TileManager {
         maptilenum = new int[gp.maxworldcol][gp.maxworldrow];
 
         getTileImage();
-        loadmap("world05.txt");
+        loadmap("world03.txt");
 
     }
 

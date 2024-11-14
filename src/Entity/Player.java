@@ -31,6 +31,12 @@ public class Player extends Entity{
         screenx = gp.screenwidth/2 - (gp.tilesize/2);
         screeny = gp.screenhight/2 - (gp.tilesize/2);
 
+        solidarea = new Rectangle();
+        solidarea.x = 12;
+        solidarea.y = 20;
+        solidarea.width = 24;
+        solidarea.height = 24;
+
         setdefaultvalues();
         getplayerimage();
     }
@@ -63,50 +69,88 @@ public class Player extends Entity{
     public void update(){
 
         boolean isMovingDiagonally = false;
+        double digonalspeed = 2.8284;
+        
 
         if (keyH.upPressed || keyH.downPressed || keyH.leftPressed || keyH.rightPressed) {
     
-            // Handle diagonal movement
+           
             if (keyH.upPressed && keyH.rightPressed) {
-                direction = "right";
-                worldx += speed / Math.sqrt(2);
-                worldy -= speed / Math.sqrt(2);
+                direction = "topright";
                 isMovingDiagonally = true;
             } else if (keyH.upPressed && keyH.leftPressed) {
-                direction = "left";
-                worldx -= speed / Math.sqrt(2);
-                worldy -= speed / Math.sqrt(2);
+                direction = "topleft";
+               
                 isMovingDiagonally = true;
             } else if (keyH.downPressed && keyH.rightPressed) {
-                direction = "right";
-                worldx += speed / Math.sqrt(2);
-                worldy += speed / Math.sqrt(2);
+                direction = "bottomright";
+                
                 isMovingDiagonally = true;
             } else if (keyH.downPressed && keyH.leftPressed) {
-                direction = "left";
-                worldx -= speed / Math.sqrt(2);
-                worldy += speed / Math.sqrt(2);
+                direction = "bottomleft";
+                
                 isMovingDiagonally = true;
             }
     
-            // Handle non-diagonal movement if not moving diagonally
+           
             if (!isMovingDiagonally) {
                 if (keyH.upPressed) {
                     direction = "up";
-                    worldy -= speed;
+                    
                 } else if (keyH.downPressed) {
                     direction = "down";
-                    worldy += speed;
+                    
                 } else if (keyH.leftPressed) {
                     direction = "left";
-                    worldx -= speed;
+                    
                 } else if (keyH.rightPressed) {
                     direction = "right";
-                    worldx += speed;
+                    
                 }
             }
+
+            collisionOn = false;
+            gp.cchecker.checkTile(this);
+
+            if(collisionOn == false){
+                switch (direction) {
+                    case "up":
+                    worldy -= speed;
+                        
+                        break;
+                    case "down":
+                    worldy += speed;
+                        
+                        break;
+                    case "left":
+                    worldx -= speed;
+                        break;
+                    case "right":
+                    worldx += speed;
+                        break;
+
+                    case "topright":
+                    worldx += digonalspeed;
+                    worldy -= digonalspeed;
+                    break;
+                    case "bottomright":
+                    worldx += digonalspeed;
+                    worldy += digonalspeed;
+                    break;
+                    case "topleft":
+                    worldx -= digonalspeed;
+                    worldy -= digonalspeed;
+                    break;
+                    case "bottomleft":
+                    worldx -= digonalspeed;
+                    worldy += digonalspeed;
+                    break;
+                    
+                }
+            }
+
     
-            // Update sprite animation
+            
             spritecounter++;
             if (spritecounter >= 12) {
                 if (spritnum == 1) {
@@ -162,9 +206,47 @@ public class Player extends Entity{
             }
                 break;
 
-        }
+            case "topright":
+            if(spritnum == 1){
+                image = right1;
+            }
+            if(spritnum == 2){
+                image = right2;
+            }
+            break;
 
+            
+            case "topleft":
+            if(spritnum == 1){
+                image = left1;
+            }
+            if(spritnum == 2){
+                image = left2;
+            }
+                break;
+                
+            case "bottomleft":
+            if(spritnum == 1){
+                image = left1;
+            }
+            if(spritnum == 2){
+                image = left2;
+            }
+                break;
+                case "bottomright":
+            if(spritnum == 1){
+                image = right1;
+            }
+            if(spritnum == 2){
+                image = right2;
+            }
+            break;
+
+        }
+        
         g2.drawImage(image, screenx, screeny, gp.tilesize , gp.tilesize, null);
+        g2.setColor(Color.red);
+        g2.drawRect(screenx+solidarea.x, screeny + solidarea.y, solidarea.width, solidarea.height);
         
         
     }

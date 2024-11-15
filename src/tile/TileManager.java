@@ -136,9 +136,11 @@ public class TileManager {
 
             tile[31]= new Tile();
             tile[31].image = ImageIO.read(getClass().getResourceAsStream("rest/tile005.png"));
+            tile[31].collision = true;
 
             tile[32]= new Tile();
             tile[32].image = ImageIO.read(getClass().getResourceAsStream("rest/tile006.png"));
+            tile[32].collision = true;
 
             tile[33]= new Tile();
             tile[33].image = ImageIO.read(getClass().getResourceAsStream("rest/tile007.png"));
@@ -148,9 +150,11 @@ public class TileManager {
 
             tile[35]= new Tile();
             tile[35].image = ImageIO.read(getClass().getResourceAsStream("rest/tile009.png"));
+            tile[35].collision = true;
 
             tile[36]= new Tile();
             tile[36].image = ImageIO.read(getClass().getResourceAsStream("rest/tile010.png"));
+            tile[36].collision = true;
 
             tile[37]= new Tile();
             tile[37].image = ImageIO.read(getClass().getResourceAsStream("rest/tile011.png"));

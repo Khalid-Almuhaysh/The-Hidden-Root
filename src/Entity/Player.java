@@ -306,6 +306,7 @@ public class Player extends Entity{
         g2.setColor(Color.red);
         g2.drawRect(screenx+solidarea.x, screeny + solidarea.y, solidarea.width, solidarea.height);
         }
+
         
     }
 }

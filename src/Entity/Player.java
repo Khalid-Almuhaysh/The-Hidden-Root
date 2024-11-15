@@ -1,7 +1,5 @@
 package Entity;
 
-import java.awt.Color;
-import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.awt.*;
@@ -20,6 +18,7 @@ public class Player extends Entity{
 
     public final int screenx;
     public final int screeny;
+    int haskey = 0;
 
     
 
@@ -28,12 +27,14 @@ public class Player extends Entity{
         this.gp=gp;
         this.keyH=keyH;
 
-        screenx = gp.screenwidth/2 - (gp.tilesize/2);
-        screeny = gp.screenhight/2 - (gp.tilesize/2);
+        screenx =  gp.screenwidth/2 - (gp.tilesize/2);  
+        screeny =  gp.screenhight/2 - (gp.tilesize/2);
 
         solidarea = new Rectangle();
         solidarea.x = 12;
         solidarea.y = 20;
+          solidareadefaultx = solidarea.x;
+          solidareadefaulty = solidarea.y;
         solidarea.width = 24;
         solidarea.height = 24;
 
@@ -43,8 +44,8 @@ public class Player extends Entity{
 
     public void setdefaultvalues(){
 
-        worldx = gp.tilesize*25;
-        worldy = gp.tilesize*25;
+        worldx = gp.tilesize*23;
+        worldy = gp.tilesize*23;
         speed= 4;
         direction ="down";
     }
@@ -112,6 +113,10 @@ public class Player extends Entity{
             collisionOn = false;
             gp.cchecker.checkTile(this);
 
+            //check object collision
+            int objinedex = gp.cchecker.checkObject(this, true);
+            pickupObject(objinedex);
+
             if(collisionOn == false){
                 switch (direction) {
                     case "up":
@@ -159,6 +164,39 @@ public class Player extends Entity{
                     spritnum = 1;
                 }
                 spritecounter = 0;
+            }
+        }
+    }
+
+    public void pickupObject(int i)
+    {
+        if (i != 999)
+        {
+           
+
+            String objectName = gp.obj[i].name;
+
+            switch (objectName) {
+                case "Key":
+                    gp.playSE(1);
+                    haskey++;
+                    gp.obj[i] = null;
+                    System.out.println("Key: " + haskey);
+                    break;
+                case "Door":
+                    gp.playSE(4);
+                    if (haskey > 0) 
+                    {
+                        gp.obj[i] = null;
+                        haskey--;    
+                    }
+                    System.out.println("Key: " + haskey);
+                    break;
+                case "Boots":
+                    gp.playSE(3);
+                    speed += 2;
+                    gp.obj[i] = null;
+                    System.out.println("Speed increased by " + speed);
             }
         }
     }
@@ -245,8 +283,8 @@ public class Player extends Entity{
         }
         
         g2.drawImage(image, screenx, screeny, gp.tilesize , gp.tilesize, null);
-        g2.setColor(Color.red);
-        g2.drawRect(screenx+solidarea.x, screeny + solidarea.y, solidarea.width, solidarea.height);
+        //g2.setColor(Color.red);
+        //g2.drawRect(screenx+solidarea.x, screeny + solidarea.y, solidarea.width, solidarea.height);
         
         
     }

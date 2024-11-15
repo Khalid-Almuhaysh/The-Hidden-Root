@@ -19,6 +19,7 @@ public class Player extends Entity{
     public final int screenx;
     public final int screeny;
     int haskey = 0;
+    double digonalspeed = 2.8284;
 
     
 
@@ -70,7 +71,7 @@ public class Player extends Entity{
     public void update(){
 
         boolean isMovingDiagonally = false;
-        double digonalspeed = 2.8284;
+        
         
 
         if (keyH.upPressed || keyH.downPressed || keyH.leftPressed || keyH.rightPressed) {
@@ -184,17 +185,21 @@ public class Player extends Entity{
                     System.out.println("Key: " + haskey);
                     break;
                 case "Door":
-                    gp.playSE(4);
+                    
                     if (haskey > 0) 
                     {
                         gp.obj[i] = null;
-                        haskey--;    
+                        haskey--;
+                        gp.playSE(4);    
                     }
                     System.out.println("Key: " + haskey);
                     break;
                 case "Boots":
                     gp.playSE(3);
+                    gp.playSE(6);
+                    gp.stopMusic();
                     speed += 2;
+                    digonalspeed +=2;
                     gp.obj[i] = null;
                     System.out.println("Speed increased by " + speed);
             }

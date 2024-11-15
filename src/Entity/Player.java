@@ -18,7 +18,7 @@ public class Player extends Entity{
 
     public final int screenx;
     public final int screeny;
-    int haskey = 0;
+    public int haskey = 0;
     double digonalspeed = 2.8284;
 
     
@@ -32,12 +32,12 @@ public class Player extends Entity{
         screeny =  gp.screenhight/2 - (gp.tilesize/2);
 
         solidarea = new Rectangle();
-        solidarea.x = 12;
-        solidarea.y = 20;
-          solidareadefaultx = solidarea.x;
-          solidareadefaulty = solidarea.y;
-        solidarea.width = 24;
-        solidarea.height = 24;
+        solidarea.x = 16;
+        solidarea.y = 26;
+        solidareadefaultx = solidarea.x;
+        solidareadefaulty = solidarea.y;
+        solidarea.width = 16;
+        solidarea.height = 16;
 
         setdefaultvalues();
         getplayerimage();
@@ -182,7 +182,7 @@ public class Player extends Entity{
                     gp.playSE(1);
                     haskey++;
                     gp.obj[i] = null;
-                    System.out.println("Key: " + haskey);
+                    gp.ui.showmassge("You got a Key!");
                     break;
                 case "Door":
                     
@@ -190,9 +190,13 @@ public class Player extends Entity{
                     {
                         gp.obj[i] = null;
                         haskey--;
-                        gp.playSE(4);    
+                        gp.playSE(4);   
+                        gp.ui.showmassge("You opened the Door!");
                     }
-                    System.out.println("Key: " + haskey);
+                    else{
+                        gp.ui.showmassge("You Need a Key!");
+                    }
+                    
                     break;
                 case "Boots":
                     gp.playSE(3);
@@ -201,8 +205,18 @@ public class Player extends Entity{
                     speed += 2;
                     digonalspeed +=2;
                     gp.obj[i] = null;
-                    System.out.println("Speed increased by " + speed);
+                    gp.ui.showmassge("You got speed boost!!!");
+                    break;
+
+                case "Chest":
+                    gp.ui.gamefinshed = true;
+                    gp.stopMusic();
+                    gp.playSE(2);
+                    break;
             }
+                
+                
+
         }
     }
     
@@ -288,9 +302,10 @@ public class Player extends Entity{
         }
         
         g2.drawImage(image, screenx, screeny, gp.tilesize , gp.tilesize, null);
-        //g2.setColor(Color.red);
-        //g2.drawRect(screenx+solidarea.x, screeny + solidarea.y, solidarea.width, solidarea.height);
-        
+        if(keyH.debug == true){
+        g2.setColor(Color.red);
+        g2.drawRect(screenx+solidarea.x, screeny + solidarea.y, solidarea.width, solidarea.height);
+        }
         
     }
 }

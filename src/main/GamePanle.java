@@ -39,6 +39,8 @@ public class GamePanle extends JPanel implements Runnable{
     
     public collisionChecker cchecker = new collisionChecker(this);
     public AssetSetter aSetter = new AssetSetter(this);
+    public UI ui = new UI(this);
+
     Thread gameThread;
 
 
@@ -133,7 +135,7 @@ public class GamePanle extends JPanel implements Runnable{
 
         tileM.draw(g2);
 
-        player.draw(g2);
+        
 
         //Object drawing
 
@@ -144,6 +146,10 @@ public class GamePanle extends JPanel implements Runnable{
                 obj[i].draw(g2, this);
             }
         }
+
+        player.draw(g2);
+
+        ui.draw(g2);
         
 
         g2.dispose();

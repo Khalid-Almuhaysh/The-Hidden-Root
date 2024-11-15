@@ -9,6 +9,7 @@ import javax.swing.JPanel;
 import javax.swing.plaf.basic.BasicComboBoxUI.KeyHandler;
 
 import Entity.Player;
+import object.SuperObject;
 import tile.TileManager;
 
 public class GamePanle extends JPanel implements Runnable{
@@ -31,9 +32,20 @@ public class GamePanle extends JPanel implements Runnable{
 
     TileManager tileM = new TileManager(this);
     keyHandler keyH= new keyHandler();
-    Thread gameThread;
+
+    Sound sound = new Sound();
+    
     public collisionChecker cchecker = new collisionChecker(this);
+    public AssetSetter aSetter = new AssetSetter(this);
+    Thread gameThread;
+
+
     public Player player = new Player(this, keyH);
+    public SuperObject obj[] = new SuperObject [10];
+    
+
+
+
 
     int playerX=100;
     int playerY=100;
@@ -46,6 +58,14 @@ public class GamePanle extends JPanel implements Runnable{
         this.setDoubleBuffered(true);
         this.addKeyListener(keyH);
         this.setFocusable(true);
+    }
+
+    public void setupGame() 
+    {
+        aSetter.setObject();
+
+        playMusic(0);
+
     }
 
     public void startgamethread()
@@ -110,9 +130,35 @@ public class GamePanle extends JPanel implements Runnable{
         tileM.draw(g2);
 
         player.draw(g2);
+
+        //Object drawing
+
+        for(int i=0; i<obj.length; i++)
+        {
+            if(obj[i] != null)
+            {
+                obj[i].draw(g2, this);
+            }
+        }
         
 
         g2.dispose();
+    }
+    public void playMusic(int i)
+    {
+        sound.setFile(i);
+        sound.play();
+        sound.loop();
+        
+    }
+    public void stopMusic()
+    {
+        sound.stop();
+    }
+    public void playSE(int i)
+    {
+        sound.setFile(i);
+        sound.play();
     }
 
 }

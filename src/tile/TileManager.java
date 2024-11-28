@@ -5,6 +5,9 @@ package tile;
  import javax.swing.*;
 
 import main.GamePanle;
+import main.collisionChecker;
+import main.keyHandler;
+
 import java.awt.Graphics2D;
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -19,10 +22,12 @@ public class TileManager {
     GamePanle gp;
     public Tile[] tile;
     public int maptilenum[][];
+    
 
     public TileManager(GamePanle gp)
     {
         this.gp = gp;
+        
 
         tile = new Tile[50];
 
@@ -52,7 +57,7 @@ public class TileManager {
 
             tile[4] = new Tile();
             tile[4].image = ImageIO.read(getClass().getResourceAsStream("rest/palmtree1.png"));
-            tile[4].collision = true;
+            tile[4].treecollision = true;
 
             tile[5] = new Tile();
             tile[5].image = ImageIO.read(getClass().getResourceAsStream("rest/dirt.png"));
@@ -62,11 +67,11 @@ public class TileManager {
             
             tile[7]= new Tile();
             tile[7].image = ImageIO.read(getClass().getResourceAsStream("rest/sandtree.png"));
-            tile[7].collision = true;
+            tile[7].treecollision = true;
             
             tile[8]= new Tile();
             tile[8].image = ImageIO.read(getClass().getResourceAsStream("rest/tree1.png"));
-            tile[8].collision = true;
+            tile[8].treecollision = true;
             
             tile[9]= new Tile();
             tile[9].image = ImageIO.read(getClass().getResourceAsStream("rest/yflower1.png"));

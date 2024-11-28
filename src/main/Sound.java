@@ -20,7 +20,7 @@ public class Sound {
         soundURL[2] = getClass().getResource("sound/fanfare.wav");
         soundURL[3] = getClass().getResource("sound/powerup.wav");
         soundURL[4] = getClass().getResource("sound/unlock.wav");
-        soundURL[5] = getClass().getResource("sound/menu_theme.wav");
+        soundURL[5] = getClass().getResource("sound/menu_theme bit.wav");
         soundURL[6] = getClass().getResource("sound/fastFunnyBit.wav");
         
     }
@@ -34,31 +34,59 @@ public void setFile(int i)
         clip = AudioSystem.getClip();
         clip.open(ais);
 
-         if (i == 0 || i == 6) {
+         if (i == 0 || i == 6 || i == 5) {
                 FloatControl volumeControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
                 volumeControl.setValue(-20.0f);
          }
         
     } catch (Exception e) {
+        e.printStackTrace();
     }
 }
 
 
 public void play()
 {
-    clip.start();
+    if (clip != null) {
+        System.out.println("Playing sound: " + clip.toString());
+        clip.start();
+    }
 }
 
 public void loop()
 {
-    clip.loop(Clip.LOOP_CONTINUOUSLY);
+    if (clip != null) {
+        clip.loop(Clip.LOOP_CONTINUOUSLY);
+    }
     
 }
 
 public void stop()
 {
+    if (clip != null) { // Null check to prevent calling stop on a null object
+        System.out.println("Stopping sound: " + clip.toString());
+        clip.stop();
+    }
+}
 
-    clip.stop();
+public void pause() {
+    if (clip != null && clip.isRunning()) {
+        clip.stop(); // Pause the clip by stopping it
+    }
+}
+
+public void resume() {
+    if (clip != null) {
+        clip.start(); // Resume the clip
+    }
+}
+public void reset() {
+    // Reset the clip when it's no longer needed
+    if (clip != null) {
+        clip.flush(); // Clear the clip buffer
+        clip.close(); // Close the clip and release resources
+        clip = null;  // Set to null to ensure it's reset
+    }
 }
 
 }

@@ -7,7 +7,7 @@ public class App {
             JFrame window = new JFrame();
             window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
             window.setResizable(false);
-            window.setTitle("2D Game");
+            window.setTitle("Hidden Root");
 
             GamePanle gamePanle = new GamePanle();
             window.add(gamePanle);

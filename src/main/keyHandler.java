@@ -8,6 +8,12 @@ public class keyHandler implements KeyListener{
     public boolean upPressed , downPressed, leftPressed, rightPressed,
      topright, topleft, bottomright, bottomleft,
      debug, restart;
+     
+     GamePanle gp;
+
+     public keyHandler(GamePanle gp){
+        this.gp = gp;
+     }
     @Override
     public void keyTyped(KeyEvent e) {
     }
@@ -16,6 +22,36 @@ public class keyHandler implements KeyListener{
     public void keyPressed(KeyEvent e) {
 
         int code = e.getKeyCode();
+
+        if(gp.gamestate == gp.menustate){
+            if(code == KeyEvent.VK_W){
+                gp.ui.commandnum--;
+                if (gp.ui.commandnum < 0 ) {
+                    gp.ui.commandnum = 1;
+                }
+            }
+            if(code == KeyEvent.VK_S){
+                gp.ui.commandnum++;
+                if (gp.ui.commandnum >1 ) {
+                    gp.ui.commandnum = 0;
+                }
+            }
+            if(code == KeyEvent.VK_ENTER){
+                if(gp.ui.commandnum == 0){
+                    gp.showNameInputDialog();
+                    gp.gamestate = gp.playstate;
+                    gp.stopMM();  // Stop the menu music
+                    gp.playMusic(0); // Start the game music
+                }
+                else if(gp.ui.commandnum == 1){
+                    System.exit(0);
+                }
+            }
+        }
+        if (gp.gamestate == gp.winstate && code == KeyEvent.VK_SPACE) {
+            gp.restartToMainMenu();
+            
+        }
 
         if(code == KeyEvent.VK_W){
             upPressed = true;
@@ -49,6 +85,24 @@ public class keyHandler implements KeyListener{
             }
         
         }
+        if(code == KeyEvent.VK_ESCAPE){
+            if (gp.gamestate == gp.playstate) {
+                gp.gamestate = gp.pausestate;
+                gp.pauseAllSounds(); 
+            }
+            else if (gp.gamestate == gp.pausestate) {
+                gp.gamestate = gp.playstate;
+                gp.resumeAllSounds();
+            }
+        }
+        if(code == KeyEvent.VK_BACK_SPACE){
+            if (gp.gamestate == gp.playstate || gp.gamestate == gp.pausestate || gp.gamestate == gp.menustate) {
+                gp.gamestate = gp.winstate;
+                gp.resumeAllSounds();
+            }
+
+        }
+
         
     }
 

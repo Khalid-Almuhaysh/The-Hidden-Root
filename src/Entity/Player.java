@@ -19,7 +19,7 @@ public class Player extends Entity{
     public final int screenx;
     public final int screeny;
     public int haskey = 0;
-    double digonalspeed = 2.8284;
+    public double digonalspeed = 2.8284;
 
     
 
@@ -200,7 +200,7 @@ public class Player extends Entity{
                     break;
                 case "Boots":
                     gp.playSE(3);
-                    gp.playSE(6);
+                    gp.playfastmusic(6);
                     gp.stopMusic();
                     speed += 2;
                     digonalspeed +=2;
@@ -209,8 +209,9 @@ public class Player extends Entity{
                     break;
 
                 case "Chest":
-                    gp.ui.gamefinshed = true;
+                    gp.gamestate = gp.winstate;
                     gp.stopMusic();
+                    gp.stopfastmusic();
                     gp.playSE(2);
                     break;
             }

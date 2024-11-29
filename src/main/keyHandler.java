@@ -85,6 +85,7 @@ public class keyHandler implements KeyListener{
             }
         
         }
+        
         if(code == KeyEvent.VK_ESCAPE){
             if (gp.gamestate == gp.playstate) {
                 gp.gamestate = gp.pausestate;

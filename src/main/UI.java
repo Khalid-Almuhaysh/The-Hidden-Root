@@ -85,7 +85,7 @@ public class UI {
             text = "You found the Chest";
             textlength = (int)g2.getFontMetrics().getStringBounds(text, g2).getWidth();
 
-            x = gp.screenwidth/4 +(30) - textlength/2;
+            x = gp.screenwidth/4 +(35) - textlength/2;
             y = gp.screenhight/2 -(gp.tilesize*3);
             g2.drawString(text, x, y);
 
@@ -93,7 +93,7 @@ public class UI {
             text = "Your time is: "+dFormat.format(playtime)+" !";
             textlength = (int)g2.getFontMetrics().getStringBounds(text, g2).getWidth();
 
-            x = gp.screenwidth/4 +(30) - textlength/2;
+            x = gp.screenwidth/4 +(35) - textlength/2;
             y = gp.screenhight/2 -(gp.tilesize*4);
             g2.drawString(text, x, y);
 
@@ -102,7 +102,7 @@ public class UI {
             text = "You win";
             textlength = (int)g2.getFontMetrics().getStringBounds(text, g2).getWidth();
 
-            x = gp.screenwidth/4 + (30) - textlength/2;
+            x = gp.screenwidth/4 + (35) - textlength/2;
             y = gp.screenhight/2 +(gp.tilesize*2);
             g2.drawString(text, x, y);
             leaderbord(g2);
@@ -125,7 +125,7 @@ public class UI {
             g2.drawString("x "+ gp.player.haskey,74,65);
 
             playtime +=(double)1/60;
-            g2.drawString("Time "+dFormat.format(playtime), gp.tilesize*11, 65);
+            g2.drawString("Time "+dFormat.format(playtime), gp.tilesize*15, 65);
             
 
             if(messegon == true){
@@ -148,13 +148,31 @@ public class UI {
             textlength = (int)g2.getFontMetrics().getStringBounds(text, g2).getWidth();
 
             x = gp.screenwidth/2 - textlength/2;
-            y = gp.screenhight/2 ;
+            y = gp.screenhight/2 + gp.tilesize*5;
             g2.drawString(text, x, y);
+
+            optionmenu();
         }
     }
+    public void optionmenu(){
+        int box_x = gp.tilesize * 5 + 20;
+        int box_y = gp.tilesize;
+        int box_width = gp.tilesize * 9;
+        int box_height = gp.tilesize * 9;
+        int text_x;
+        int text_y;
+        String name;
+        String time;
 
+        String text;
+        int textlength;
+
+        g2.setColor(Color.BLACK);
+        g2.fillRoundRect(box_x, box_y, box_width, box_height, 35, 35);
+
+    }
     public void leaderbord(Graphics2D g2){
-        int box_x = gp.tilesize * 10 - (10);
+        int box_x = gp.tilesize * 13;
         int box_y = 10;
         int box_width = gp.tilesize * 6;
         int box_height = gp.tilesize * 11 + (35);
@@ -200,7 +218,7 @@ public class UI {
         g2.setFont(g2.getFont().deriveFont(Font.PLAIN, 45));
         g2.setColor(Color.GRAY);
     
-        text_x = gp.tilesize;
+        text_x = gp.tilesize*3;
         text_y = gp.tilesize * 2;
         text = "THE HIDDEN ROOT";
         textlength = (int) g2.getFontMetrics().getStringBounds(text, g2).getWidth();
@@ -210,11 +228,11 @@ public class UI {
         g2.setColor(Color.WHITE);
     
         g2.drawString(text, text_x, text_y);
-        g2.drawImage(Gameicon, gp.tilesize * 6, gp.tilesize * 3, gp.tilesize * 4, gp.tilesize * 4, null);
+        g2.drawImage(Gameicon, gp.tilesize * 8, gp.tilesize * 3, gp.tilesize * 4, gp.tilesize * 4, null);
     
         g2.setFont(g2.getFont().deriveFont(Font.PLAIN, 20));
     
-        text_x = gp.tilesize * 6 + 20;
+        text_x = gp.tilesize * 8 + 20;
         text_y = gp.tilesize * 8;
         text = "New Game";
         textlength = (int) g2.getFontMetrics().getStringBounds(text, g2).getWidth();
@@ -230,7 +248,7 @@ public class UI {
         g2.setFont(g2.getFont().deriveFont(Font.PLAIN, 20));
         g2.setColor(Color.WHITE);
     
-        text_x = gp.tilesize * 7 + 10;
+        text_x = gp.tilesize * 9;
         text_y = gp.tilesize * 9 + 10;
         text = "Quit";
         textlength = (int) g2.getFontMetrics().getStringBounds(text, g2).getWidth();

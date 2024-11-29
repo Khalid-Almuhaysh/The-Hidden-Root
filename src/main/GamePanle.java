@@ -4,6 +4,9 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.GraphicsDevice;
+import java.awt.GraphicsEnvironment;
+import java.awt.image.BufferedImage;
 
 import javax.swing.JPanel;
 import javax.swing.plaf.basic.BasicComboBoxUI.KeyHandler;
@@ -18,9 +21,9 @@ public class GamePanle extends JPanel implements Runnable{
     final int scale = 3;
 
     public final int tilesize = originaltilesize*scale;
-    public final int maxscreencol = 16;
+    public final int maxscreencol = 20;
     public final int maxscreenrow = 12;
-    public final int screenwidth = tilesize*maxscreencol; //768 pix
+    public final int screenwidth = tilesize*maxscreencol; //960 pix
     public final int screenhight = tilesize*maxscreenrow; //576 pix
 
     public final int maxworldcol = 50;
@@ -31,6 +34,12 @@ public class GamePanle extends JPanel implements Runnable{
     public String[] playerNames = new String[10]; // Stores the last 5 players' names
     public double[] playerTimes = new double[10]; // Stores the corresponding times for each player
     public String currentPlayerName = "";
+
+    int screenwidth2 = screenwidth;
+    int screenhight2 = screenhight;
+    BufferedImage tempscreen;
+    Graphics2D g2;
+    
 
     int FPS= 60;
 
@@ -101,6 +110,25 @@ public class GamePanle extends JPanel implements Runnable{
         playMusic(5);
         gamestate = menustate;
 
+        tempscreen = new BufferedImage(screenwidth, screenhight, BufferedImage.TYPE_INT_ARGB);
+        g2 = (Graphics2D) tempscreen.getGraphics();
+        
+            //setfullscreen();
+        
+        
+
+
+
+    }
+    public void setfullscreen(){
+
+        GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+        GraphicsDevice gd = ge.getDefaultScreenDevice();
+
+        gd.setFullScreenWindow(App.window);
+
+        screenwidth2 = App.window.getWidth();
+        screenhight2 = App.window.getHeight();
     }
 
     public void startgamethread()
@@ -133,7 +161,8 @@ public class GamePanle extends JPanel implements Runnable{
         if(delta >= 1){
             update();
 
-            repaint();
+            drawtotemp();
+            drawtoscreen();
 
             delta--;
 
@@ -176,13 +205,8 @@ public class GamePanle extends JPanel implements Runnable{
         }
         }
 
-    public void paintComponent(Graphics g){
-
-        super.paintComponent(g);
-
-        Graphics2D g2 = (Graphics2D)g;
-
-
+        public void drawtotemp(){
+            
         if (gamestate == menustate) {
             // Clear the screen and redraw the menu
             g2.setColor(Color.BLACK);
@@ -214,8 +238,16 @@ public class GamePanle extends JPanel implements Runnable{
         
         
 
-        g2.dispose();
-    }
+
+        }
+        public void drawtoscreen(){
+            Graphics g = getGraphics();
+            g.drawImage(tempscreen, 0, 0, screenwidth2,screenhight2,null);
+            g.dispose();
+
+        }
+
+    
     public void restartToMainMenu() {
         // Stop game thread to avoid conflicts
 

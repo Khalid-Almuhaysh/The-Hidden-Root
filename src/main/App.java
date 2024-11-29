@@ -2,12 +2,15 @@ package main;
 import javax.swing.JFrame;
 
 public class App {
+
+    public static JFrame window;
     public static void main(String[] args) throws Exception 
     {
-            JFrame window = new JFrame();
+            window = new JFrame();
             window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
             window.setResizable(false);
             window.setTitle("Hidden Root");
+            window.setUndecorated(true);
 
             GamePanle gamePanle = new GamePanle();
             window.add(gamePanle);

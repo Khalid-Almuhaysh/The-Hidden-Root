@@ -234,6 +234,7 @@ public class GamePanle extends JPanel implements Runnable{
         player.digonalspeed = 2.8284;
     
         // Reset objects
+        aSetter.resetRandomSeed();
         aSetter.setObject();
     
         // Reset UI variables

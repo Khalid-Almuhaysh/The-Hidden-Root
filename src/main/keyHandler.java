@@ -9,6 +9,7 @@ public class keyHandler implements KeyListener{
      topright, topleft, bottomright, bottomleft,
      debug, restart;
      
+     
      GamePanle gp;
 
      public keyHandler(GamePanle gp){
@@ -30,6 +31,7 @@ public class keyHandler implements KeyListener{
                     gp.ui.commandnum = 1;
                 }
             }
+            
             if(code == KeyEvent.VK_S){
                 gp.ui.commandnum++;
                 if (gp.ui.commandnum >1 ) {
@@ -48,6 +50,42 @@ public class keyHandler implements KeyListener{
                 }
             }
         }
+
+        if(gp.gamestate == gp.pausestate){
+            if(code == KeyEvent.VK_W){
+                gp.ui.optionnum--;
+                if (gp.ui.optionnum < 0 ) {
+                    gp.ui.optionnum = 2; // Wrap around to the last option
+                }
+            }
+            if(code == KeyEvent.VK_S){
+                gp.ui.optionnum++;
+                if (gp.ui.optionnum > 2 ) {
+                    gp.ui.optionnum = 0; // Wrap around to the first option
+                }
+            }
+            if(code == KeyEvent.VK_ENTER){
+                if(gp.ui.optionnum == 0){
+                    gp.toggleFullscreen();
+                    System.out.println("go to full screen");
+                }
+                else if(gp.ui.optionnum == 1){
+                    if (gp.isMusicMuted) {
+                        gp.isMusicMuted = false;
+                        gp.playMusic(0); // Resume music
+                        System.out.println("Music unmuted.");
+                    } else {
+                        gp.isMusicMuted = true;
+                        gp.stopAllSounds();
+                        System.out.println("Music muted.");
+                    }
+                }
+                else if(gp.ui.optionnum == 2){
+                    System.exit(0);
+                }
+            }
+        }
+        
         if (gp.gamestate == gp.winstate && code == KeyEvent.VK_SPACE) {
             gp.restartToMainMenu();
             

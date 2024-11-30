@@ -1,5 +1,7 @@
 package main;
 
+import java.awt.AlphaComposite;
+import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.FontFormatException;
@@ -32,6 +34,7 @@ public class UI {
     public int commandnum = 0;
     public String currentPlayerName = "";  // Store the current player's name
     public double playtimer = 0;
+    public int optionnum = 0;
     
 
     double playtime;
@@ -168,8 +171,64 @@ public class UI {
         int textlength;
 
         g2.setColor(Color.BLACK);
+        float opacity = 0.8f; // Opacity level: 0.0f (completely transparent) to 1.0f (fully opaque)
+        g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, opacity));
+
+        // Draw the semi-transparent rounded rectangle
         g2.fillRoundRect(box_x, box_y, box_width, box_height, 35, 35);
 
+        // Reset the composite to full opacity for subsequent drawing
+        g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1.0f));
+        
+        g2.setColor(Color.WHITE);
+
+       g2.setStroke(new BasicStroke(3)); // 5 is the thickness of the line
+
+        // Draw the rounded rectangle
+        g2.drawRoundRect(box_x + 2, box_y + 2, box_width - 3, box_height - 3, 35, 35);
+
+        // Optionally reset the stroke to default
+        g2.setStroke(new BasicStroke(1)); // Reset to 1-pixel thickness
+
+        g2.setFont(g2.getFont().deriveFont(Font.PLAIN, 20));
+
+        text_x = gp.tilesize * 7;
+        text_y = gp.tilesize * 3;
+        text = "FullScreen Mode";
+        textlength = (int) g2.getFontMetrics().getStringBounds(text, g2).getWidth();
+    
+        g2.setColor(Color.WHITE);
+    
+        g2.drawString(text, text_x, text_y);
+    
+        if (optionnum == 0) {
+            g2.drawString(">", text_x - gp.tilesize + 10, text_y);
+        }
+    
+        g2.setFont(g2.getFont().deriveFont(Font.PLAIN, 20));
+        g2.setColor(Color.WHITE);
+    
+        text_x = gp.tilesize * 8;
+        text_y = gp.tilesize * 5;
+        text = "Music";
+        textlength = (int) g2.getFontMetrics().getStringBounds(text, g2).getWidth();
+    
+        g2.drawString(text, text_x, text_y);
+        if (optionnum == 1) {
+            g2.drawString(">", text_x - gp.tilesize + 10, text_y);
+        }
+        g2.setFont(g2.getFont().deriveFont(Font.PLAIN, 20));
+        g2.setColor(Color.WHITE);
+    
+        text_x = gp.tilesize * 8;
+        text_y = gp.tilesize * 7;
+        text = "Quit";
+        textlength = (int) g2.getFontMetrics().getStringBounds(text, g2).getWidth();
+    
+        g2.drawString(text, text_x, text_y);
+        if (optionnum == 2) {
+            g2.drawString(">", text_x - gp.tilesize + 10, text_y);
+        }
     }
     public void leaderbord(Graphics2D g2){
         int box_x = gp.tilesize * 13;

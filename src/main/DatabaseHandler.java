@@ -8,15 +8,42 @@ public class DatabaseHandler {
     private static final String PASSWORD = "";
 
     private Connection connection;
-    
+
     public DatabaseHandler() {
         try {
-            // Establish the connection
             connection = DriverManager.getConnection(DB_URL, USER, PASSWORD);
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
+
+    public boolean readFullscreenPreference() {
+        String query = "SELECT value FROM settings WHERE key_name = 'fullscreen'";
+        try (Statement stmt = connection.createStatement();
+             ResultSet rs = stmt.executeQuery(query)) {
+            if (rs.next()) {
+                return Boolean.parseBoolean(rs.getString("value"));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false; // Default to windowed mode if the value is not found
+    }
+
+    public void saveFullscreenPreference(boolean isFullscreen) {
+        String query = "INSERT INTO settings (key_name, value) VALUES ('fullscreen', ?) " +
+                       "ON DUPLICATE KEY UPDATE value = ?";
+        try (PreparedStatement stmt = connection.prepareStatement(query)) {
+            String value = String.valueOf(isFullscreen);
+            stmt.setString(1, value);
+            stmt.setString(2, value);
+            stmt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    
 
     // Save player's name and time to the database
     public void savePlayerScore(String name, double time) {

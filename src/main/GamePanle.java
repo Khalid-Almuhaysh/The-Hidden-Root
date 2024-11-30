@@ -34,6 +34,8 @@ public class GamePanle extends JPanel implements Runnable{
     public String[] playerNames = new String[10]; // Stores the last 5 players' names
     public double[] playerTimes = new double[10]; // Stores the corresponding times for each player
     public String currentPlayerName = "";
+    public boolean isMusicMuted = false;
+    public boolean isFullscreen;
 
     int screenwidth2 = screenwidth;
     int screenhight2 = screenhight;
@@ -56,6 +58,7 @@ public class GamePanle extends JPanel implements Runnable{
     public collisionChecker cchecker = new collisionChecker(this);
     public AssetSetter aSetter = new AssetSetter(this);
     public UI ui = new UI(this);
+    
 
     Thread gameThread;
 
@@ -90,15 +93,38 @@ public class GamePanle extends JPanel implements Runnable{
 
         dbHandler = new DatabaseHandler();
     }
+    public void toggleFullscreen() {
+         isFullscreen = dbHandler.readFullscreenPreference();
+       dbHandler.saveFullscreenPreference(!isFullscreen); // Toggle and save preference
+   
+       // Notify the user to restart the game
+       javax.swing.JOptionPane.showMessageDialog(
+           App.window,
+           "Fullscreen mode has been " + (!isFullscreen ? "enabled" : "disabled") + ".\nPlease restart the game for changes to take effect."
+       );
+   
+       // Exit the game to apply changes
+       System.exit(0);
+   }
     public void showNameInputDialog() {
-        // Ask for the player's name before starting the game
-        String name = javax.swing.JOptionPane.showInputDialog("Enter your name:");
-        
-        if (name != null && !name.trim().isEmpty()) {
-            currentPlayerName = name;
-        } else {
-            currentPlayerName = "Player" + (int)(Math.random() * 1000); // Random name if empty
-        }
+        boolean wasFullScreen = false;
+
+    // Temporarily exit fullscreen mode if active
+    if (App.window.getGraphicsConfiguration().getDevice().getFullScreenWindow() != null) {
+        App.window.getGraphicsConfiguration().getDevice().setFullScreenWindow(null);
+        wasFullScreen = true;
+    }
+
+    // Show input dialog
+    String name = javax.swing.JOptionPane.showInputDialog(App.window, "Enter your name:");
+
+    // Handle empty or null input
+    currentPlayerName = (name != null && !name.trim().isEmpty()) ? name : "Player" + (int) (Math.random() * 1000);
+
+    // Restore fullscreen mode if it was active
+    if (wasFullScreen) {
+        setfullscreen();
+    }
     }
 
     public void setupGame() 
@@ -113,7 +139,10 @@ public class GamePanle extends JPanel implements Runnable{
         tempscreen = new BufferedImage(screenwidth, screenhight, BufferedImage.TYPE_INT_ARGB);
         g2 = (Graphics2D) tempscreen.getGraphics();
         
-            //setfullscreen();
+        
+            setfullscreen();
+        
+           
         
         
 
@@ -252,6 +281,8 @@ public class GamePanle extends JPanel implements Runnable{
         // Stop game thread to avoid conflicts
 
         stopAllSounds();
+        isMusicMuted = false;
+
         if (gameThread != null) {
             gameThread.interrupt();
             gameThread = null;
@@ -374,6 +405,7 @@ public class GamePanle extends JPanel implements Runnable{
             menumusic.resume();  // Resume main menu music
         }
     }
+    
 
     
     
@@ -384,10 +416,4 @@ public class GamePanle extends JPanel implements Runnable{
             playerTimes[i] = 0.0;
         }
     }
-
-    
-
-
-
-
 }

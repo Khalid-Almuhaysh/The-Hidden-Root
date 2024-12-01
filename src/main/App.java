@@ -14,8 +14,9 @@ public class App {
             window.setResizable(false);
             window.setTitle("Hidden Root");
 
-           
+           if(isFullscreen == true){
             window.setUndecorated(true); // Enable fullscreen mode
+           }
         
 
             GamePanle gamePanle = new GamePanle();

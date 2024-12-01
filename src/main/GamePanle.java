@@ -36,6 +36,8 @@ public class GamePanle extends JPanel implements Runnable{
     public String currentPlayerName = "";
     public boolean isMusicMuted = false;
     public boolean isFullscreen;
+    
+    public boolean fu;
 
     int screenwidth2 = screenwidth;
     int screenhight2 = screenhight;
@@ -94,8 +96,16 @@ public class GamePanle extends JPanel implements Runnable{
         dbHandler = new DatabaseHandler();
     }
     public void toggleFullscreen() {
-         isFullscreen = dbHandler.readFullscreenPreference();
+         
        dbHandler.saveFullscreenPreference(!isFullscreen); // Toggle and save preference
+
+       if(isFullscreen == true){
+        System.out.println("is full screen");
+        fu = true;
+       }else if(isFullscreen == false){
+        System.out.println("is not full screen");
+        fu = false;
+       }
    
        // Notify the user to restart the game
        javax.swing.JOptionPane.showMessageDialog(
@@ -129,6 +139,8 @@ public class GamePanle extends JPanel implements Runnable{
 
     public void setupGame() 
     {
+       isFullscreen = dbHandler.readFullscreenPreference();
+        
         
         dbHandler.loadLeaderboard(this);
         aSetter.setObject();
@@ -139,8 +151,9 @@ public class GamePanle extends JPanel implements Runnable{
         tempscreen = new BufferedImage(screenwidth, screenhight, BufferedImage.TYPE_INT_ARGB);
         g2 = (Graphics2D) tempscreen.getGraphics();
         
-        
+        if(isFullscreen == true){
             setfullscreen();
+        }
         
            
         
